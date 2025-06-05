@@ -1,95 +1,103 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
+
+import { useState, useEffect } from 'react';
+import messages from '../data/messages.json';
 
 export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol>
-          <li>
-            Get started by editing <code>src/app/page.tsx</code>.
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [currentMessage, setCurrentMessage] = useState('');
+  const [copied, setCopied] = useState(false);
 
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
+  const getRandomMessage = () => {
+    const randomIndex = Math.floor(Math.random() * messages.messages.length);
+    setCurrentMessage(messages.messages[randomIndex]);
+  };
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(currentMessage);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
+  };
+
+  const shareMessage = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'Kurban Bayramı Mesajı',
+          text: currentMessage,
+        });
+      } catch (err) {
+        console.error('Error sharing:', err);
+      }
+    }
+  };
+
+  const handleMessageChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setCurrentMessage(e.target.value);
+  };
+
+  useEffect(() => {
+    getRandomMessage();
+  }, []);
+
+  return (
+    <>
+      <div className="background-pattern"></div>
+      <div className="container">
+        <img
+          src="/koyun.png"
+          alt="Kurbanlık Koyun"
+          style={{ width: '100%', height: '300px', display: 'block', margin: '0', borderRadius: '16px', boxShadow: '0 4px 16px rgba(0,0,0,0.08)' }}
+        />
+        <div className="content-inner">
+          <h1 className="title gradient-text">Kurban Bayramı Mesajları</h1>
+          <div className="message-box">
+            <textarea
+              className="message"
+              value={currentMessage}
+              onChange={handleMessageChange}
+              placeholder="Mesajınızı buraya yazabilirsiniz..."
             />
-            Deploy now
-          </a>
-          <a
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.secondary}
-          >
-            Read our docs
-          </a>
+          </div>
+          <div className="button-container">
+            <button
+              onClick={getRandomMessage}
+              className="button new-message"
+            >
+              <svg className="icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <path d="M16 4a12 12 0 1 1-8.49 3.51" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M4 4v7h7" strokeLinecap="round" strokeLinejoin="round"/>
+                <polygon points="16,12 17,15 20,15 17.5,17 18.5,20 16,18.5 13.5,20 14.5,17 12,15 15,15" fill="currentColor" stroke="none"/>
+              </svg>
+              Yeni Mesaj
+            </button>
+            <button
+              onClick={copyToClipboard}
+              className="button copy"
+            >
+              <svg className="icon" viewBox="0 0 32 32" fill="none" stroke="currentColor" strokeWidth="2.2">
+                <rect x="9" y="7" width="14" height="18" rx="3"/>
+                <path d="M13 7V5a3 3 0 0 1 6 0v2"/>
+              </svg>
+              {copied ? '✓' : 'Kopyala'}
+            </button>
+            <button
+              onClick={shareMessage}
+              className="button share"
+            >
+              <svg className="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M4 12v8a2 2 0 002 2h12a2 2 0 002-2v-8" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M16 6l-4-4-4 4" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M12 2v13" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Paylaş
+            </button>
+          </div>
         </div>
-      </main>
-      <footer className={styles.footer}>
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </>
   );
 }

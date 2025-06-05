@@ -1,33 +1,43 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: #fff;
+  font-family: 'Baloo 2', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+}
+
+.background-pattern {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('/pattern.jpg') repeat;
+  background-size: 400px 400px;
+  opacity: 0.15;
+  pointer-events: none;
 }
 
 * {
-  box-sizing: border-box;
-  padding: 0;
   margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
 a {
@@ -35,8 +45,263 @@ a {
   text-decoration: none;
 }
 
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Animations */
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Glass effect */
+.glass {
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* Button hover effects */
+.button-hover-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.button-hover-effect::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.button-hover-effect:hover::after {
+  width: 300px;
+  height: 300px;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
+  }
+}
+
+.container {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+  min-height: 0;
+}
+
+.content-inner {
+  padding: 0 32px;
+}
+
+img[alt="Kurbanlık Koyun"] {
+  width: 100%;
+  height: 300px;
+  display: block;
+  margin: 0;
+  border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+  object-fit: cover;
+}
+
+.title, .gradient-text {
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin: 30px 0 30px 0;
+  background: linear-gradient(90deg, #00c347 0%, #0cc5bf 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-fill-color: transparent;
+}
+
+.message-box {
+  background: #f0fdf4;
+  border: 1px solid #dcfce7;
+  border-radius: 15px;
+  padding: 20px;
+  margin-bottom: 30px;
+  min-height: 200px;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+}
+
+.message {
+  color: #1f2937;
+  font-size: 1.25rem;
+  line-height: 1.6;
+  width: 100%;
+  min-height: 200px;
+  resize: vertical;
+  background: transparent;
+  border: none;
+  outline: none;
+  text-align: center;
+  font-family: inherit;
+  padding: 10px;
+}
+
+.message:focus {
+  outline: 2px solid #16a34a;
+  border-radius: 8px;
+}
+
+.button-container {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.button {
+  padding: 15px 30px;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Baloo 2', sans-serif;
+}
+
+.button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  filter: brightness(0.95);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.new-message {
+  flex: 2;
+  min-width: 300px;
+  background: linear-gradient(90deg, #b0cf12 0%, #1bc85b 100%);
+}
+
+.copy {
+  background: linear-gradient(90deg, #454545 0%, #686868 100%);
+}
+
+.share {
+  background: linear-gradient(90deg, #863a00 0%, #9b6114 100%);
+}
+
+.copy, .share {
+  flex: 1;
+  min-width: 120px;
+  max-width: 150px;
+}
+
+.icon {
+  width: 28px;
+  height: 28px;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  body {
+    align-items: center;
+    justify-content: center;
+    min-height: 100dvh;
+    padding: 8px;
+  }
+  .container {
+    max-width: 100vw;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    margin: 0 auto;
+  }
+  img[alt="Kurbanlık Koyun"] {
+    height: 140px;
+    border-radius: 10px;
+  }
+  .content-inner {
+    padding: 0 4px;
+  }
+  .title, .gradient-text {
+    font-size: 1.3rem;
+    margin: 18px 0 18px 0;
+  }
+  .message-box {
+    padding: 10px;
+    margin-bottom: 16px;
+    min-height: 90px;
+  }
+  .message {
+    font-size: 1rem;
+    min-height: 90px;
+    padding: 6px;
+  }
+  .button {
+    padding: 10px 8px;
+    font-size: 1.05rem;
+  }
+  .new-message {
+    min-width: 100%;
   }
 }
